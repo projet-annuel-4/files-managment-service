@@ -11,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Builder
 public class FileRequest {
-    private MultipartFile file;
+    private Long id;
     private Long direcoryId;
+    private MultipartFile file;
     private String title;
     private String link;
     private String description;
-    private String details;
 }

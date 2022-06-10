@@ -13,6 +13,7 @@ import fr.esgi.filesManagment.dto.FileResponse;
 import fr.esgi.filesManagment.exception.BadRequestException;
 import fr.esgi.filesManagment.exception.ResourceNotFoundException;
 import fr.esgi.filesManagment.model.File;
+import fr.esgi.filesManagment.model.FileType;
 import fr.esgi.filesManagment.repository.DirectoryRepository;
 import fr.esgi.filesManagment.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FileService {
     private final static String PROFILE_FILE="annual-project-platform-files";
+    private final static String PATCH_EXE="patch";
     private final DirectoryService directoryService;
     private final FileRepository fileRepository;
     private final AmazonS3 s3;
@@ -49,12 +51,13 @@ public class FileService {
         metadata.put("Content-Length",String.valueOf(fileRequest.getFile().getSize()));
         //4. Store the image in s3 and Update BDD with s3 image link
         String path = String.format("%s/%s", PROFILE_FILE,fileRequest.getDirecoryId());
-        String fileName = fileRequest.getLink();
+        String fileName = String.format("%s/%s",fileRequest.getLink(),fileRequest.getId());
         try{
             upload(path,fileName,Optional.of(metadata), fileRequest.getFile().getInputStream());
             var files = directory.getFiles();
             var dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            var newFile = File.builder().link( fileName).title(fileRequest.getTitle()).description(fileRequest.getDescription()).details(dateFormat.format(Calendar.getInstance().getTime())).build();
+            var fileType = Objects.equals(fileRequest.getFile().getContentType(),PATCH_EXE) ? FileType.PATCH : FileType.FILE;
+            var newFile = File.builder().link( fileName).type(fileType).title(fileRequest.getTitle()).description(fileRequest.getDescription()).details(dateFormat.format(Calendar.getInstance().getTime())).build();
             fileRepository.saveAndFlush(newFile);
             files.add(newFile);
             directory.setFiles(files);
@@ -65,10 +68,11 @@ public class FileService {
     }
 
     @Transactional
-    public DirectoryResponse downloadDirectoryFiles(Long id) {
+    public DirectoryResponse downloadDirectoryFiles(Long id,String type) {
         var directory = directoryService.getDirectoryById(id);
         String path = String.format("%s/%s", PROFILE_FILE,directory.getId());
         var files = directory.getFiles().stream()
+                .filter(file -> Objects.equals(file.getType(), FileType.valueOf(type)))
                 .map(file -> FileResponse.builder()
                                         .id(file.getId())
                                         .details(file.getDetails())

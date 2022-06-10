@@ -25,6 +25,8 @@ public class File {
     private Long id;
     private String link;
     private String title;
+    @Enumerated(EnumType.STRING)
+    private FileType type;
     private String description;
     private String details;
     @ManyToOne
