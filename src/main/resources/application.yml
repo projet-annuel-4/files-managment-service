@@ -1,0 +1,34 @@
+server:
+  port: 9140
+hostname: localhost:4200
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+
+spring:
+  application:
+    name: files-managment-service
+  config:
+    import: optional:configserver:config-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+    stream:
+      function:
+        definition: createdDirectoryConsumer
+      kafka:
+        binder:
+          brokers: "localhost:29092"
+          replicationFactor: 1
+      bindings:
+        createdDirectoryConsumer-in-0:
+          destination: "directory-created"
+          content-type: application/json
