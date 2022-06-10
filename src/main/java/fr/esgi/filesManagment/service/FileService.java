@@ -100,6 +100,21 @@ public class FileService {
                         .build();
     }
 
+    public void deleteFile(Long fileId) {
+        var file = fileRepository.findById(fileId).orElseThrow(()-> new ResourceNotFoundException("File","id",fileId.toString()));
+        String path = String.format("%s/%s", PROFILE_FILE,file.getDirectory().getId());
+        delete(path,file.getLink());
+        fileRepository.delete(file);
+    }
+
+    private void delete(String path, String key){
+        try{
+            s3.deleteObject(path, key);
+        }catch(AmazonServiceException e){
+            throw new BadRequestException("Failed to store file to s3",e);
+        }
+    }
+
     private void upload(String path, String fileName, Optional<Map<String,String>> optionalMetada, InputStream inputStream){
         ObjectMetadata metadata = new ObjectMetadata();
 

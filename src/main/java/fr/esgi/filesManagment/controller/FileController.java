@@ -26,6 +26,12 @@ public class FileController {
         return  ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteFile(@PathVariable("id") Long id){
+        fileService.deleteFile(id);
+        return  ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<FileResponse> downloadFile(@PathVariable("id") Long id){
         //ByteArrayResource

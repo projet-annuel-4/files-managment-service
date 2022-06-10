@@ -23,7 +23,7 @@ spring:
         service-id: config-server
     stream:
       function:
-        definition: createdDirectoryConsumer
+        definition: createdDirectoryConsumer,deleteDirectoryConsumer
       kafka:
         binder:
           brokers: "localhost:29092"
@@ -31,4 +31,7 @@ spring:
       bindings:
         createdDirectoryConsumer-in-0:
           destination: "directory-created"
+          content-type: application/json
+        deleteDirectoryConsumer-in-0:
+          destination: "directory-deleted"
           content-type: application/json

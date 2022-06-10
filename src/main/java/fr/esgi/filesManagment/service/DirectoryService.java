@@ -12,10 +12,15 @@ import org.springframework.stereotype.Service;
 public class DirectoryService {
 
     private final DirectoryRepository directoryRepository;
+    private final FileService fileService;
 
     public Directory createDirectory(DirectoryEvent directoryEvent) {
         var directory = Directory.builder().id(directoryEvent.getId()).title(directoryEvent.getTitle()).build();
         return directoryRepository.saveAndFlush(directory);
+    }
+
+    public void deleteDirectory(Long id) {
+        directoryRepository.deleteById(id);
     }
 
     public Directory updateDirectory(Directory directory) {
