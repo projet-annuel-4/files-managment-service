@@ -1,12 +1,12 @@
 package fr.esgi.filesManagment.model;
 
-import com.amazonaws.services.workdocs.model.ActivityType;
-
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum FileType {
-    FILE(1L, "file"),
-    PATCH(2L, "patch");
+    LAST_FILE(1L, "last"),
+    ACTUAL_FILE(2L, "actual"),
+    PATCH_FILE(3L, "patch");
 
     private final Long id;
     private final String name;
@@ -28,10 +28,10 @@ public enum FileType {
      * @return the Enum representation for the given string.
      * @throws IllegalArgumentException if unknown string.
      */
-    public static ActivityType fromName(String s) throws IllegalArgumentException {
+    public static FileType fromName(String s) throws IllegalArgumentException {
         return Arrays
-                .stream(ActivityType.values())
-                .filter(v -> v.name().equals(s))
+                .stream(FileType.values())
+                .filter(v -> Objects.equals(v.getName(),s))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("unknown value: " + s));
     }

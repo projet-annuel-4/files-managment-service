@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileRequest {
     private Long id;
     private Long direcoryId;
-    private MultipartFile file;
+    private String type;
     private String title;
     private String link;
     private String description;

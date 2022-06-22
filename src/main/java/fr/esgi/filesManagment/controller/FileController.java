@@ -22,7 +22,7 @@ public class FileController {
     @PostMapping
     public ResponseEntity uploadFile(@RequestPart("details") FileRequest fileRequest,
                                      @ModelAttribute MultipartFile file){
-        fileService.uploadFile(fileRequest);
+        fileService.uploadFile(file,fileRequest);
         return  ResponseEntity.ok().build();
     }
 
@@ -33,9 +33,9 @@ public class FileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FileResponse> downloadFile(@PathVariable("id") Long id){
+    public ResponseEntity<FileResponse> downloadFile(@PathVariable("id") Long id,@RequestParam(value="type") Optional<String> type){
         //ByteArrayResource
-        var file = fileService.downloadFile(id);
+        var file = fileService.downloadFile(id,type.orElse(FileType.ACTUAL_FILE.getName()));
         return ResponseEntity.ok(file);
     }
 
@@ -48,7 +48,7 @@ public class FileController {
     @GetMapping("/directory/{id}")
     public ResponseEntity<DirectoryResponse> downloadDirectoryFiles(@PathVariable("id") Long id,@RequestParam(value="type") Optional<String> type){
         //ByteArrayResource
-        var directory = fileService.downloadDirectoryFiles(id,type.orElse(FileType.FILE.getName()));
+        var directory = fileService.downloadDirectoryFiles(id,type.orElse(FileType.ACTUAL_FILE.getName()));
         return ResponseEntity.ok(directory);
     }
 

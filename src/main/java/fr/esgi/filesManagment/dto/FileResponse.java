@@ -16,6 +16,4 @@ public class FileResponse {
     private String link;
     private String description;
     private String details;
-
-
 }

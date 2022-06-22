@@ -17,11 +17,12 @@ public class AmazonConfig {
 
     @Value("${amazon.aws.secretkey}")
     private String amazonAWSSecretKey;
+
     @Bean
     public AmazonS3 s3(){
         return AmazonS3ClientBuilder
                 .standard()
-                .withRegion("eu-west-3")
+                .withRegion("eu-west-1")
                 .withCredentials(new AWSStaticCredentialsProvider(amazonAWSCredentials()))
                 .build();
     }
