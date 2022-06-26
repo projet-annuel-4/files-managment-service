@@ -1,5 +1,6 @@
 package fr.esgi.filesManagment.controller;
 
+import fr.esgi.filesManagment.dto.DirectoryRequest;
 import fr.esgi.filesManagment.dto.DirectoryResponse;
 import fr.esgi.filesManagment.dto.FileRequest;
 import fr.esgi.filesManagment.dto.FileResponse;
@@ -25,13 +26,24 @@ public class FileController {
         fileService.uploadFile(file,fileRequest);
         return  ResponseEntity.ok().build();
     }
-
+    @PostMapping("/{id}")
+    public ResponseEntity uploadDirectoryFiles(@RequestPart("details") DirectoryRequest directory,
+                                     @ModelAttribute List<MultipartFile> files){
+        fileService.uploadDirectoryFiles(files,directory);
+        return  ResponseEntity.ok().build();
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFile(@PathVariable("id") Long id){
         fileService.deleteFile(id);
         return  ResponseEntity.noContent().build();
     }
 
+    /**
+     *
+     * @param id
+     * @param type
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<FileResponse> downloadFile(@PathVariable("id") Long id,@RequestParam(value="type") Optional<String> type){
         //ByteArrayResource
@@ -51,5 +63,4 @@ public class FileController {
         var directory = fileService.downloadDirectoryFiles(id,type.orElse(FileType.ACTUAL_FILE.getName()));
         return ResponseEntity.ok(directory);
     }
-
 }

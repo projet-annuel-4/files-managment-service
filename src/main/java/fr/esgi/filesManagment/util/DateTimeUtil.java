@@ -1,6 +1,6 @@
 package fr.esgi.filesManagment.util;
 
-import fr.esgi.group.exception.BadRequestException;
+import fr.esgi.filesManagment.exception.BadRequestException;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;

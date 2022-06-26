@@ -21,17 +21,3 @@ spring:
       discovery:
         enabled: true
         service-id: config-server
-    stream:
-      function:
-        definition: createdDirectoryConsumer,deleteDirectoryConsumer
-      kafka:
-        binder:
-          brokers: "localhost:29092"
-          replicationFactor: 1
-      bindings:
-        createdDirectoryConsumer-in-0:
-          destination: "directory-created"
-          content-type: application/json
-        deleteDirectoryConsumer-in-0:
-          destination: "directory-deleted"
-          content-type: application/json

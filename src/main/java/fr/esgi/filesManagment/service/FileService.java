@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import fr.esgi.filesManagment.dto.DirectoryRequest;
 import fr.esgi.filesManagment.dto.DirectoryResponse;
 import fr.esgi.filesManagment.dto.FileRequest;
 import fr.esgi.filesManagment.dto.FileResponse;
@@ -143,5 +144,11 @@ public class FileService {
         }catch(AmazonServiceException | IOException e){
             throw new BadRequestException("Failed to download file from s3",e);
         }
+    }
+
+    public void uploadDirectoryFiles(List<MultipartFile> files, DirectoryRequest directory) {
+        directory.getFiles().forEach(file->{
+            uploadFile(files.get(0),file );
+        });
     }
 }
