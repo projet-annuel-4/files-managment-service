@@ -1,11 +1,11 @@
-package fr.esgi.filesmanagement.controller;
+package fr.esgi.filesManagment.controller;
 
-import fr.esgi.filesmanagement.dto.DirectoryRequest;
-import fr.esgi.filesmanagement.dto.DirectoryResponse;
-import fr.esgi.filesmanagement.dto.FileRequest;
-import fr.esgi.filesmanagement.dto.FileResponse;
-import fr.esgi.filesmanagement.model.FileType;
-import fr.esgi.filesmanagement.service.FileService;
+import fr.esgi.filesManagment.dto.DirectoryRequest;
+import fr.esgi.filesManagment.dto.DirectoryResponse;
+import fr.esgi.filesManagment.dto.FileRequest;
+import fr.esgi.filesManagment.dto.FileResponse;
+import fr.esgi.filesManagment.model.FileType;
+import fr.esgi.filesManagment.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

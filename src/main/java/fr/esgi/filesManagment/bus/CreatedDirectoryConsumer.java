@@ -1,8 +1,8 @@
-package fr.esgi.filesmanagement.bus;
+package fr.esgi.filesManagment.bus;
 
 
-import fr.esgi.filesmanagement.dto.DirectoryEvent;
-import fr.esgi.filesmanagement.service.DirectoryService;
+import fr.esgi.filesManagment.dto.DirectoryEvent;
+import fr.esgi.filesManagment.service.DirectoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;

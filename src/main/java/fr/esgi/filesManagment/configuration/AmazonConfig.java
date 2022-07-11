@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.configuration;
+package fr.esgi.filesManagment.configuration;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

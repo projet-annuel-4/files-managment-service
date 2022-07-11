@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.configuration;
+package fr.esgi.filesManagment.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

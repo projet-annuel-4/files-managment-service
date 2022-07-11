@@ -1,24 +1,21 @@
-package fr.esgi.filesmanagement.service;
+package fr.esgi.filesManagment.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.opsworks.model.UserProfile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import fr.esgi.filesmanagement.dto.DirectoryRequest;
-import fr.esgi.filesmanagement.dto.DirectoryResponse;
-import fr.esgi.filesmanagement.dto.FileRequest;
-import fr.esgi.filesmanagement.dto.FileResponse;
-import fr.esgi.filesmanagement.exception.BadRequestException;
-import fr.esgi.filesmanagement.exception.ResourceNotFoundException;
-import fr.esgi.filesmanagement.model.File;
-import fr.esgi.filesmanagement.model.FileType;
-import fr.esgi.filesmanagement.repository.DirectoryRepository;
-import fr.esgi.filesmanagement.repository.FileRepository;
+import fr.esgi.filesManagment.dto.DirectoryRequest;
+import fr.esgi.filesManagment.dto.DirectoryResponse;
+import fr.esgi.filesManagment.dto.FileRequest;
+import fr.esgi.filesManagment.dto.FileResponse;
+import fr.esgi.filesManagment.exception.BadRequestException;
+import fr.esgi.filesManagment.exception.ResourceNotFoundException;
+import fr.esgi.filesManagment.model.File;
+import fr.esgi.filesManagment.model.FileType;
+import fr.esgi.filesManagment.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +33,7 @@ public class FileService {
     @Value("${amazon.s3.bucket.name}")
     private String PROFILE_FILE;
 
-    private final DirectoryService directoryService;
+    private final fr.esgi.filesManagment.service.DirectoryService directoryService;
     private final FileRepository fileRepository;
     private final AmazonS3 s3;
 

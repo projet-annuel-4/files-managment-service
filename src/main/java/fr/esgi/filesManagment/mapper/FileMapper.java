@@ -1,8 +1,8 @@
-package fr.esgi.filesmanagement.mapper;
+package fr.esgi.filesManagment.mapper;
 
 
-import fr.esgi.filesmanagement.dto.FileResponse;
-import fr.esgi.filesmanagement.model.File;
+import fr.esgi.filesManagment.dto.FileResponse;
+import fr.esgi.filesManagment.model.File;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

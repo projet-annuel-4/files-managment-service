@@ -1,9 +1,9 @@
-package fr.esgi.filesmanagement.service;
+package fr.esgi.filesManagment.service;
 
-import fr.esgi.filesmanagement.dto.DirectoryEvent;
-import fr.esgi.filesmanagement.exception.ResourceNotFoundException;
-import fr.esgi.filesmanagement.model.Directory;
-import fr.esgi.filesmanagement.repository.DirectoryRepository;
+import fr.esgi.filesManagment.dto.DirectoryEvent;
+import fr.esgi.filesManagment.exception.ResourceNotFoundException;
+import fr.esgi.filesManagment.model.Directory;
+import fr.esgi.filesManagment.repository.DirectoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

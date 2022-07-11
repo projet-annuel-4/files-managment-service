@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.model;
+package fr.esgi.filesManagment.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.dto;
+package fr.esgi.filesManagment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

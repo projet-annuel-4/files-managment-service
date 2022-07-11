@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.configuration;
+package fr.esgi.filesManagment.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

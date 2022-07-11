@@ -1,6 +1,6 @@
-package fr.esgi.filesmanagement.repository;
+package fr.esgi.filesManagment.repository;
 
-import fr.esgi.filesmanagement.model.Directory;
+import fr.esgi.filesManagment.model.Directory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

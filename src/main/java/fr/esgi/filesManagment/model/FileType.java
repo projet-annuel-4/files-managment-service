@@ -1,4 +1,4 @@
-package fr.esgi.filesmanagement.model;
+package fr.esgi.filesManagment.model;
 
 import java.util.Arrays;
 import java.util.Objects;
