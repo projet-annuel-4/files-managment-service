@@ -13,7 +13,7 @@ eureka:
 
 spring:
   application:
-    name: files-managment-service
+    name: files-management-service
   config:
     import: optional:configserver:config-server
   cloud:

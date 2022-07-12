@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Component
 public class ControllerAspect {
 
-    @Pointcut(value = "execution(* fr.esgi.chat.controller.*.*(..))")
+    @Pointcut(value = "execution(* fr.esgi.filesManagment.controller.*.*(..))")
     public void executeLogging() {
         // default implementation ignored
     }

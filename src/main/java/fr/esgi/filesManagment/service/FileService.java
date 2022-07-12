@@ -1,7 +1,6 @@
 package fr.esgi.filesManagment.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.opsworks.model.UserProfile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -15,10 +14,8 @@ import fr.esgi.filesManagment.exception.BadRequestException;
 import fr.esgi.filesManagment.exception.ResourceNotFoundException;
 import fr.esgi.filesManagment.model.File;
 import fr.esgi.filesManagment.model.FileType;
-import fr.esgi.filesManagment.repository.DirectoryRepository;
 import fr.esgi.filesManagment.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +33,7 @@ public class FileService {
     @Value("${amazon.s3.bucket.name}")
     private String PROFILE_FILE;
 
-    private final DirectoryService directoryService;
+    private final fr.esgi.filesManagment.service.DirectoryService directoryService;
     private final FileRepository fileRepository;
     private final AmazonS3 s3;
 
