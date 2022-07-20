@@ -1,16 +1,20 @@
 package fr.esgi.filesManagment.controller;
 
-import fr.esgi.filesManagment.dto.DirectoryRequest;
-import fr.esgi.filesManagment.dto.DirectoryResponse;
-import fr.esgi.filesManagment.dto.FileRequest;
-import fr.esgi.filesManagment.dto.FileResponse;
+import com.amazonaws.services.ecs.model.Attachment;
+import fr.esgi.filesManagment.dto.*;
 import fr.esgi.filesManagment.model.FileType;
 import fr.esgi.filesManagment.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.Produces;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +26,7 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity uploadFile(@RequestPart("details") FileRequest fileRequest,
-                                     @ModelAttribute MultipartFile file){
+                                     @RequestPart("file") MultipartFile file){
         fileService.uploadFile(file,fileRequest);
         return  ResponseEntity.ok().build();
     }
@@ -44,11 +48,18 @@ public class FileController {
      * @param type
      * @return
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<FileResponse> downloadFile(@PathVariable("id") Long id,@RequestParam(value="type") Optional<String> type){
+    @GetMapping("/{id}/{type}")
+    public ResponseEntity<ByteArrayResource > downloadFile(@PathVariable("id") Long id,@PathVariable("type") String type){
         //ByteArrayResource
-        var file = fileService.downloadFile(id,type.orElse(FileType.ACTUAL_FILE.getName()));
-        return ResponseEntity.ok(file);
+        System.out.println("/////////////////////////////" + type + id);
+        var file = fileService.downloadFile(id,type);
+        var resource = new ByteArrayResource(file.getFile());
+        return ResponseEntity.ok()
+                .contentLength(file.getFile().length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + file.getTitle() + "\"")
+                .header("Cache-Control", "no-cache")
+                .body(resource);
     }
 
     /**
