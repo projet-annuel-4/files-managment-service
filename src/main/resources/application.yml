@@ -1,23 +1,69 @@
 server:
-  port: 9140
-hostname: localhost:4200
+  port: ${PORT:9140}
+hostname: ${HOSTNAME:localhost:9140}
 eureka:
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${random.uuid}
   client:
-    service-url:
-      default-zone: http://localhost:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka
 
 spring:
   application:
     name: files-management-service
-  config:
-    import: optional:configserver:config-server
   cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: config-server
+    stream:
+      function:
+        definition: createdDirectoryConsumer,deleteDirectoryConsumer
+      kafka:
+        binder:
+          brokers: ${KAFKA_URL}
+          replicationFactor: 1
+      bindings:
+        createdDirectoryConsumer-in-0:
+          destination: "directory-created"
+          content-type: application/json
+        deleteDirectoryConsumer-in-0:
+          destination: "directory-deleted"
+          content-type: application/json
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 5MB
+      file-size-threshold: 2MB
+      enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${BDD_USERNAME}
+    password: ${BDD_PASSWORD}
+    url: jdbc:postgresql://${BDD_URL}?useSSL=false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      show_sql: true
+      format_sql: true
+      use_sql_comments: false
+      type: all
+      disableConnectionTracking: true
+
+amazon:
+  aws:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+  s3:
+    bucket:
+      name: annual-project-storage
+
+jwt:
+  header: Authorization
+  secret:  ${JWT_SECRET}
+  expiration: 86400
+
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.assignment: DEBUG
