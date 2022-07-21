@@ -15,17 +15,17 @@ spring:
   cloud:
     stream:
       function:
-        definition: createdDirectoryConsumer,deleteDirectoryConsumer
+        definition: createdProjectConsumer,deleteProjectConsumer
       kafka:
         binder:
           brokers: ${KAFKA_URL}
           replicationFactor: 1
       bindings:
-        createdDirectoryConsumer-in-0:
-          destination: "directory-created"
+        createdProjectConsumer-in-0:
+          destination: "project-created"
           content-type: application/json
-        deleteDirectoryConsumer-in-0:
-          destination: "directory-deleted"
+        deleteProjectConsumer-in-0:
+          destination: "project-deleted"
           content-type: application/json
   servlet:
     multipart:

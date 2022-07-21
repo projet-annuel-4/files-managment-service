@@ -1,6 +1,6 @@
 package fr.esgi.filesManagment.service;
 
-import fr.esgi.filesManagment.dto.DirectoryEvent;
+import fr.esgi.filesManagment.dto.ProjectEvent;
 import fr.esgi.filesManagment.exception.ResourceNotFoundException;
 import fr.esgi.filesManagment.model.Directory;
 import fr.esgi.filesManagment.repository.DirectoryRepository;
@@ -13,8 +13,8 @@ public class DirectoryService {
 
     private final DirectoryRepository directoryRepository;
 
-    public Directory createDirectory(DirectoryEvent directoryEvent) {
-        var directory = Directory.builder().id(directoryEvent.getId()).title(directoryEvent.getTitle()).build();
+    public Directory createDirectory(ProjectEvent projectEvent) {
+        var directory = Directory.builder().id(projectEvent.getId()).title(projectEvent.getTitle()).build();
         return directoryRepository.saveAndFlush(directory);
     }
 
