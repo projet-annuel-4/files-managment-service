@@ -6,15 +6,15 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import fr.esgi.filesManagment.dto.DirectoryRequest;
-import fr.esgi.filesManagment.dto.DirectoryResponse;
-import fr.esgi.filesManagment.dto.FileRequest;
-import fr.esgi.filesManagment.dto.FileResponse;
+import fr.esgi.filesManagment.dto.*;
 import fr.esgi.filesManagment.exception.BadRequestException;
 import fr.esgi.filesManagment.exception.ResourceNotFoundException;
+import fr.esgi.filesManagment.mapper.ImageMapper;
 import fr.esgi.filesManagment.model.File;
 import fr.esgi.filesManagment.model.FileType;
+import fr.esgi.filesManagment.model.Image;
 import fr.esgi.filesManagment.repository.FileRepository;
+import fr.esgi.filesManagment.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,21 +23,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.apache.http.entity.ContentType.*;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
     @Value("${amazon.s3.bucket.name}")
     private String PROFILE_FILE;
-
-    private final fr.esgi.filesManagment.service.DirectoryService directoryService;
+    private final DirectoryService directoryService;
     private final FileRepository fileRepository;
     private final AmazonS3 s3;
 
@@ -92,7 +89,7 @@ public class FileService {
                 .title(directory.getTitle())
                 .build();
     }
-
+    @Transactional
     public FileResponse downloadFile(Long fileId,String type) {
         var fileList = fileRepository.findByReference(fileId);
         var fileType = FileType.fromName(type);
@@ -115,7 +112,7 @@ public class FileService {
         fileRepository.delete(file);
     }
 
-    private void delete(String path, String key){
+    public void delete(String path, String key){
         try{
             s3.deleteObject(path, key);
         }catch(AmazonServiceException e){
@@ -123,7 +120,7 @@ public class FileService {
         }
     }
 
-    private void upload(String path, String fileName, Optional<Map<String,String>> optionalMetada, InputStream inputStream){
+    public void upload(String path, String fileName, Optional<Map<String,String>> optionalMetada, InputStream inputStream){
         ObjectMetadata metadata = new ObjectMetadata();
 
         optionalMetada.ifPresent((map->{
@@ -136,7 +133,7 @@ public class FileService {
         }
     }
 
-    private byte[] download(String path, String key) {
+    public byte[] download(String path, String key) {
         try{
             S3Object object = s3.getObject(path, key);
             S3ObjectInputStream inputStream =object.getObjectContent();
