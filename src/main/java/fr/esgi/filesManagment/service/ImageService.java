@@ -48,9 +48,12 @@ public class ImageService {
             throw new IllegalStateException(String.format("Cannot upload empty file [%d] ", image.getSize()));
         }
         //2. If file is an image
+        /*
         if(!IMAGES_EXE.contains(image.getContentType())){
             throw new IllegalStateException(String.format("File must be an image"));
         }
+
+         */
         //3. Grap some metadata from file if any
         Map<String,String> metadata= new HashMap<>();
         metadata.put("Content-Type", image.getContentType());

@@ -7,10 +7,7 @@ import fr.esgi.filesManagment.service.FileService;
 import fr.esgi.filesManagment.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,7 +43,7 @@ public class FileController {
     @GetMapping("/image/{id}")
     public ResponseEntity<ImageResponse > downloadImage(@PathVariable("id") Long id){
         var file = imageService.downloadImage(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity(file, HttpStatus.OK);
     }
     @PostMapping("/{id}")
     public ResponseEntity uploadDirectoryFiles(@RequestPart("details") DirectoryRequest directory,
