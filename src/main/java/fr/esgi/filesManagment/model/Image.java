@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "images", indexes = {@Index(name = "i_link", columnList = "link")})
+@Table(name = "images", indexes = {@Index(name = "i_image_link", columnList = "link")})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "images_id_seq")
