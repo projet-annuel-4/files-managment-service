@@ -23,6 +23,7 @@ public class Image {
     private String title;
     private String description;
     private String details;
+    private Long reference;
 
 
     @Override

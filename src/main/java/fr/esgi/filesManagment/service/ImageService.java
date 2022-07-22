@@ -61,17 +61,22 @@ public class ImageService {
         try{
             fileService.upload(path,fileName,Optional.of(metadata), image.getInputStream());
             var dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-            var newImage = Image.builder().link( fileName).title(imageRequest.getTitle()).description(imageRequest.getDescription()).details(dateFormat.format(Calendar.getInstance().getTime())).build();
-            imageRepository.saveAndFlush(newImage);
+            Image newImage;
+            var imageOptional = imageRepository.findByReference(Long.parseLong(imageRequest.getLink(), 10));
+            if( imageOptional.isEmpty() ){
+                newImage = Image.builder().link( fileName).title(imageRequest.getTitle()).description(imageRequest.getDescription()).details(dateFormat.format(Calendar.getInstance().getTime())).reference(Long.parseLong(imageRequest.getLink(), 10)).build();
+                imageRepository.saveAndFlush(newImage);
+            } else {
+                newImage = imageOptional.get();
+            }
             return ImageMapper.convertToResponse(newImage);
         }catch (IOException e){
             throw new BadRequestException(e.getMessage());
         }
     }
     @Transactional
-    public ImageResponse downloadImage(Long imageId) {
-        var imageEntity = imageRepository.findById(imageId).orElseThrow(()-> new ResourceNotFoundException("Image","id",imageId.toString()));
+    public ImageResponse downloadImage(Long ref) {
+        var imageEntity = imageRepository.findByReference(ref).orElseThrow(()-> new ResourceNotFoundException("Image","id",ref.toString()));
         String path = String.format("%s/%s", PROFILE_FILE,"Images");
         var image = ImageMapper.convertToResponse(imageEntity);
         image.setFile(fileService.download(path,imageEntity.getLink()));
