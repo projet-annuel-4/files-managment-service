@@ -33,8 +33,8 @@ public class DeleteProjectConsumer implements Consumer<Message<ProjectEvent>> {
                 messageHeaders.get(KafkaHeaders.RECEIVED_PARTITION_ID, Integer.class),
                 messageHeaders.get(KafkaHeaders.OFFSET, Long.class),
                 messageHeaders.get(IntegrationMessageHeaderAccessor.DELIVERY_ATTEMPT, AtomicInteger.class));
-        var directory = directoryService.getDirectoryById(projectEvent.getId());
-        directory.getFiles().stream().forEach(file -> fileService.deleteFile(file.getId()));
-        log.info("Directory with id {} saved.", directory.getId());
+//        var directory = directoryService.getDirectoryById(projectEvent.getId());
+//        directory.getFiles().stream().forEach(file -> fileService.deleteFile(file.getId()));
+//        log.info("Directory with id {} saved.", directory.getId());
     }
 }

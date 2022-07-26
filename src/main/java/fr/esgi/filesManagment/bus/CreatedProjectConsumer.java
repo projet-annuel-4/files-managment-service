@@ -32,7 +32,7 @@ public class CreatedProjectConsumer implements Consumer<Message<ProjectEvent>> {
                 messageHeaders.get(KafkaHeaders.RECEIVED_PARTITION_ID, Integer.class),
                 messageHeaders.get(KafkaHeaders.OFFSET, Long.class),
                 messageHeaders.get(IntegrationMessageHeaderAccessor.DELIVERY_ATTEMPT, AtomicInteger.class));
-        var directory = directoryService.createDirectory(projectEvent);
-        log.info("Directory with id {} saved.", directory.getId());
+        //var directory = directoryService.createDirectory(projectEvent);
+        //log.info("Directory with id {} saved.", directory.getId());
     }
 }

@@ -41,11 +41,14 @@ public class FileService {
     @Transactional
     public void uploadFile(MultipartFile file,FileRequest fileRequest) {
         //1. Chek if image is not empty
-        if(file.isEmpty()){
-            throw new BadRequestException(String.format("Cannot upload empty file [%d] ", file.getSize()));
-        }
+//        if(file.isEmpty()){
+//            throw new BadRequestException(String.format("Cannot upload empty file [%d] ", file.getSize()));
+//        }
         //2. The user exists in our BDD
         var directory = directoryService.getDirectoryById(fileRequest.getDirecoryId());
+        if( directory == null){
+            directory = directoryService.createDirectoryV2(fileRequest.getDirecoryId(), "test");
+        }
         //3. Grap some metadata from file if any
         Map<String,String> metadata= new HashMap<>();
         metadata.put("Content-Type", file.getContentType());

@@ -7,6 +7,8 @@ import fr.esgi.filesManagment.repository.DirectoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class DirectoryService {
@@ -15,6 +17,11 @@ public class DirectoryService {
 
     public Directory createDirectory(ProjectEvent projectEvent) {
         var directory = Directory.builder().id(projectEvent.getId()).title(projectEvent.getTitle()).build();
+        return directoryRepository.saveAndFlush(directory);
+    }
+
+    public Directory createDirectoryV2(Long id, String name) {
+        var directory = Directory.builder().id(id).title(name).build();
         return directoryRepository.saveAndFlush(directory);
     }
 
@@ -27,7 +34,11 @@ public class DirectoryService {
     }
 
     public Directory getDirectoryById(Long id) {
-        return directoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Directory","id",id.toString()));
+        Optional<Directory> directoryOptional =  directoryRepository.findById(id);
+        if( directoryOptional.isEmpty()){
+            return null;
+        }
+        return  directoryOptional.get();
     }
 
 
