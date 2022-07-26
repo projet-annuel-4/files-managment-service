@@ -48,6 +48,7 @@ public class FileService {
         var directory = directoryService.getDirectoryById(fileRequest.getDirecoryId());
         if( directory == null){
             directory = directoryService.createDirectoryV2(fileRequest.getDirecoryId(), "test");
+            directory.setFiles(new HashSet<>());
         }
         //3. Grap some metadata from file if any
         Map<String,String> metadata= new HashMap<>();

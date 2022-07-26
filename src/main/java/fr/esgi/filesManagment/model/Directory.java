@@ -18,8 +18,6 @@ import java.util.Set;
 @Table(name = "directories")
 public class Directory {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "directories_id_seq")
-    @SequenceGenerator(name = "directories_id_seq", sequenceName = "directories_id_seq", initialValue = 1, allocationSize = 1)
     private  Long id;
     private  String title;
     @OneToMany(mappedBy = "directory", cascade = CascadeType.ALL)
