@@ -55,7 +55,7 @@ amazon:
     secret-key: ${AWS_SECRET_KEY}
   s3:
     bucket:
-      name: annual-project-storage
+      name: annual-project-bucket
 
 jwt:
   header: Authorization
