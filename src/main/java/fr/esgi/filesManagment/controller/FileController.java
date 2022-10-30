@@ -1,20 +1,18 @@
 package fr.esgi.filesManagment.controller;
 
-import com.amazonaws.services.ecs.model.Attachment;
 import fr.esgi.filesManagment.dto.*;
 import fr.esgi.filesManagment.model.FileType;
 import fr.esgi.filesManagment.service.FileService;
 import fr.esgi.filesManagment.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.ws.rs.Produces;
 import java.net.URI;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,33 +30,37 @@ public class FileController {
         fileService.uploadFile(file,fileRequest);
         return  ResponseEntity.ok().build();
     }
+
     @PostMapping("/image")
     public ResponseEntity uploadImage(@RequestPart("details") ImageRequest imageRequest,
-                                     @RequestPart("image") MultipartFile image){
-        var newImage = imageService.uploadImage(image,imageRequest);
+                                      @RequestPart("image") MultipartFile image) {
+        var newImage = imageService.uploadImage(image, imageRequest);
         URI location = URI.create(
                 ServletUriComponentsBuilder.fromCurrentRequest().build().toUri() + "/" + newImage.getId());
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(newImage);
     }
+
     @GetMapping("/image/{id}")
-    public ResponseEntity<ImageResponse > downloadImage(@PathVariable("id") Long id){
+    public ResponseEntity<ImageResponse> downloadImage(@PathVariable("id") Long id) {
         var file = imageService.downloadImage(id);
         return new ResponseEntity(file, HttpStatus.OK);
     }
+
     @PostMapping("/{id}")
     public ResponseEntity uploadDirectoryFiles(@RequestPart("details") DirectoryRequest directory,
-                                     @ModelAttribute List<MultipartFile> files){
-        fileService.uploadDirectoryFiles(files,directory);
-        return  ResponseEntity.ok().build();
+                                               @ModelAttribute List<MultipartFile> files) {
+        fileService.uploadDirectoryFiles(files, directory);
+        return ResponseEntity.ok().build();
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteFile(@PathVariable("id") Long id){
+    public ResponseEntity deleteFile(@PathVariable("id") Long id) {
         fileService.deleteFile(id);
-        return  ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/image/{id}")
     public ResponseEntity deleteimage(@PathVariable("id") Long id){
-        fileService.deleteFile(id);
+        imageService.deleteImage(id);
         return  ResponseEntity.noContent().build();
     }
 
