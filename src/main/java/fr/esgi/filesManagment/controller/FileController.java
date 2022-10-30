@@ -6,7 +6,6 @@ import fr.esgi.filesManagment.service.FileService;
 import fr.esgi.filesManagment.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,9 +40,9 @@ public class FileController {
     }
 
     @GetMapping("/image/{id}")
-    public ResponseEntity<ImageResponse> downloadImage(@PathVariable("id") Long id) {
+    public ResponseEntity<Optional<ImageResponse>> downloadImage(@PathVariable("id") Long id) {
         var file = imageService.downloadImage(id);
-        return new ResponseEntity(file, HttpStatus.OK);
+        return ResponseEntity.ok(file);
     }
 
     @PostMapping("/{id}")

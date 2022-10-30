@@ -1,19 +1,12 @@
 package fr.esgi.filesManagment.service;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
-import fr.esgi.filesManagment.dto.*;
+import fr.esgi.filesManagment.dto.ImageRequest;
+import fr.esgi.filesManagment.dto.ImageResponse;
 import fr.esgi.filesManagment.exception.BadRequestException;
 import fr.esgi.filesManagment.exception.ResourceNotFoundException;
 import fr.esgi.filesManagment.mapper.ImageMapper;
-import fr.esgi.filesManagment.model.File;
-import fr.esgi.filesManagment.model.FileType;
 import fr.esgi.filesManagment.model.Image;
-import fr.esgi.filesManagment.repository.FileRepository;
 import fr.esgi.filesManagment.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,10 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.apache.http.entity.ContentType.*;
 
@@ -73,23 +64,29 @@ public class ImageService {
                 newImage = imageOptional.get();
             }
             return ImageMapper.convertToResponse(newImage);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new BadRequestException(e.getMessage());
         }
     }
+
     @Transactional
-    public ImageResponse downloadImage(Long ref) {
-        var imageEntity = imageRepository.findByReference(ref).orElseThrow(()-> new ResourceNotFoundException("Image","id",ref.toString()));
-        String path = String.format("%s/%s", PROFILE_FILE,"Images");
-        var image = ImageMapper.convertToResponse(imageEntity);
-        image.setFile(fileService.download(path,imageEntity.getLink()));
-        return image;
+    public Optional<ImageResponse> downloadImage(Long ref) {
+        var imageEntity = imageRepository.findByReference(ref);
+        if (imageEntity.isPresent()) {
+            String path = String.format("%s/%s", PROFILE_FILE, "Images");
+            var image = ImageMapper.convertToResponse(imageEntity.get());
+            image.setFile(fileService.download(path, imageEntity.get().getLink()));
+            return Optional.of(image);
+        }
+
+        return Optional.empty();
     }
+
     @Transactional
     public void deleteImage(Long imageId) {
-        var imageEntity = imageRepository.findById(imageId).orElseThrow(()-> new ResourceNotFoundException("Image","id",imageId.toString()));
-        String path = String.format("%s/%s", PROFILE_FILE,"Images");
-        fileService.delete(path,imageEntity.getLink());
+        var imageEntity = imageRepository.findById(imageId).orElseThrow(() -> new ResourceNotFoundException("Image", "id", imageId.toString()));
+        String path = String.format("%s/%s", PROFILE_FILE, "Images");
+        fileService.delete(path, imageEntity.getLink());
         imageRepository.delete(imageEntity);
     }
 
